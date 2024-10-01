@@ -12,7 +12,34 @@ class Chess
       (0...8).include?(xy[0]) and (0...8).include?(xy[1])
     end).flatten.each_slice(2).to_a
   end
+
+  def calc_dist(loc1, loc2)
+    Math.sqrt((loc1[0] - loc2[0]).pow(2) + (loc1[1] - loc2[1]).pow(2))
+  end
 end
 
 n1 = Chess.new
-p n1.calc_next_pos([3, 3])
+start = [1, 2]
+target = [4, 5]
+
+dist_hash = {}
+dist_to_target = n1.calc_dist(start, target)
+seq = []
+
+while dist_to_target.positive?
+  seq.append(start)
+  next_pos = n1.calc_next_pos(start)
+
+  next_pos.each_with_index do |pt, idx|
+    dist_hash[idx] = n1.calc_dist(pt, target)
+  end
+
+  dist_to_target = dist_hash.values.min
+  key_min_dist = dist_hash.key(dist_to_target)
+  p [next_pos[key_min_dist], dist_hash[key_min_dist]]
+  start = next_pos[key_min_dist]
+
+end
+
+seq.append(target)
+p seq
