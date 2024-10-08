@@ -1,3 +1,6 @@
+# class chess contains the following methods:
+#  calc_next_pos: calculates the possible next moves from a given position
+#  calc_dist    : calculates euclidean distance between two points
 class Chess
   def calc_next_pos(loc)
     x1 = [loc[0] + 1, loc[0] - 1]

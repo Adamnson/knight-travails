@@ -17,4 +17,14 @@ describe Chess do
       expect(pos.size).to eql(2)
     end
   end
+
+  context "#calc_dist" do
+    n1 = Chess.new
+    it "returns the euclidean distance between two points" do
+      expect(n1.calc_dist([0, 0], [1, 1])).to eql(Math.sqrt(2))
+      expect(n1.calc_dist([2, 2], [1, 1])).to eql(Math.sqrt(2))
+      expect(n1.calc_dist([2, 2], [0, 0])).to eql(Math.sqrt(8))
+      expect(n1.calc_dist([0, 0], [0, 0])).to eql(Math.sqrt(0))
+    end
+  end
 end
