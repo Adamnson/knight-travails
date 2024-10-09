@@ -1,9 +1,5 @@
 require "pry-byebug"
 
-# class chess contains the following methods:
-#  calc_next_pos: calculates the possible next moves from a given position
-#  calc_dist    : calculates euclidean distance between two points
-
 def calc_next_pos(loc)
   x1 = [loc[0] + 1, loc[0] - 1]
   x2 = [loc[0] + 2, loc[0] - 2]
@@ -22,16 +18,13 @@ def calc_dist(loc1, loc2)
   Math.sqrt((loc1[0] - loc2[0]).pow(2) + (loc1[1] - loc2[1]).pow(2))
 end
 
-start = [1, 2]
-target = [6, 5]
-
 # binding.pry
 def knight_moves(start, target)
   dist_hash = {}
 
   dist_to_target = calc_dist(start, target)
-  p "iteration before start #{dist_to_target}"
-  seq = {}
+
+  seq = { 0 => start }
   seq_id = 1
   while dist_to_target.positive? && seq_id < 10
 
@@ -45,20 +38,23 @@ def knight_moves(start, target)
     dist_to_target = dist_hash.values.min
     key_min_dist = dist_hash.key(dist_to_target)
 
-    p "is it included? #{seq.values.include?(next_pos[key_min_dist])}"
+    #    p "is it included? #{seq.values.include?(next_pos[key_min_dist])}"
 
     if seq.values.include?(next_pos[key_min_dist])
       dist_to_target = dist_hash.values.uniq.min(2)[1]
       key_min_dist = dist_hash.key(dist_to_target)
     end
 
-    p [next_pos[key_min_dist], dist_hash[key_min_dist]]
+    # p [next_pos[key_min_dist], dist_hash[key_min_dist]]
     seq[seq_id] = next_pos[key_min_dist]
     start = next_pos[key_min_dist]
     seq_id += 1
-    puts "at the end of #{seq_id}, seq looks like #{seq}"
+    # puts "at the end of #{seq_id}, seq looks like #{seq}"
   end
   seq
 end
+
+start = [7, 7]
+target = [0, 0]
 
 p knight_moves(start, target)
