@@ -1,3 +1,5 @@
+require "pry-byebug"
+
 # class chess contains the following methods:
 #  calc_next_pos: calculates the possible next moves from a given position
 #  calc_dist    : calculates euclidean distance between two points
@@ -23,15 +25,20 @@ end
 
 n1 = Chess.new
 start = [1, 2]
-target = [4, 5]
+target = [6, 5]
 
 dist_hash = {}
 dist_to_target = n1.calc_dist(start, target)
-seq = []
+p "iteration before start #{dist_to_target}"
+seq = {}
+seq_id = 1
 
-while dist_to_target.positive?
-  seq.append(start)
+# binding.pry
+
+while dist_to_target.positive? && seq_id < 10
+
   next_pos = n1.calc_next_pos(start)
+  dist_hash = {}
 
   next_pos.each_with_index do |pt, idx|
     dist_hash[idx] = n1.calc_dist(pt, target)
@@ -39,10 +46,20 @@ while dist_to_target.positive?
 
   dist_to_target = dist_hash.values.min
   key_min_dist = dist_hash.key(dist_to_target)
+
+  p "is it included? #{seq.values.include?(next_pos[key_min_dist])}"
+
+  if seq.values.include?(next_pos[key_min_dist])
+    dist_to_target = dist_hash.values.uniq.min(2)[1]
+    key_min_dist = dist_hash.key(dist_to_target)
+  end
+
   p [next_pos[key_min_dist], dist_hash[key_min_dist]]
+  seq[seq_id] = next_pos[key_min_dist]
   start = next_pos[key_min_dist]
+  seq_id += 1
+  puts "at the end of #{seq_id}, seq looks like #{seq}"
 
 end
-
-seq.append(target)
+# seq.append(target)
 p seq
